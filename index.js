@@ -1,20 +1,19 @@
 var express = require('express');
+var deeplink = require('node-deeplink')
 var app = express();
 
-app.set('port', (process.env.PORT || 5000));
 
-app.use(express.static(__dirname + '/public'));
-
-// views is directory for all template files
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-
-app.get('/', function(request, response) {
-  response.render('pages/index');
+app.get('/', function (req, res) {
+  res.send('Hello World!');
 });
 
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+app.get('/deeplink', deeplink({
+    fallback: 'https://cupsapp.com',
+    android_package_name: 'com.citylifeapps.cups',
+    ios_store_link: 'https://itunes.apple.com/us/app/cups-unlimited-coffee/id556462755?mt=8&uo=4',
+}));
+
+
+app.listen(process.env.PORT || 3000, function(){
+  console.log("Welcome to the machine");
 });
-
-
